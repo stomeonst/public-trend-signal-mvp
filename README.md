@@ -56,6 +56,18 @@ Outputs:
 
 The workflow intentionally has no credentials, external requests, customer data, production URLs, or automatic publishing nodes. The final table connector remains outside the public sample because workspace access and destination schema require customer authorization.
 
+## Bilingual Python review proof
+
+[`docs/python-code-review-sample.md`](docs/python-code-review-sample.md) reviews one intentionally flawed fictional function in English and Simplified Chinese. It includes:
+
+1. A concrete correctness defect and minimal counterexample.
+2. Edge-case, validation, readability, and normalization findings.
+3. Time and space complexity analysis.
+4. A typed reference correction.
+5. Six focused regression tests.
+
+The fixture contains no customer code, private repository material, credentials, or production data.
+
 ## Test
 
 ```bash
