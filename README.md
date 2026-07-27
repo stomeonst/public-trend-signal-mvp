@@ -6,6 +6,18 @@ A local, reproducible proof of an authorized trend-data pipeline.
 
 This repository uses fictional records. It does not scrape TikTok, Instagram, YouTube, or any other platform. It contains no customer data, credentials, cookies, private URLs, or paid API calls.
 
+## Fixed-scope paid trial
+
+Need a similar pipeline for an authorized export, API, or customer-owned workspace?
+
+**Data Signal Audit: USD 150 or RMB 999.** The fixed scope covers one sanitized sample of up to 100 records, one source-to-output field map, one deduplication and scoring review, one prioritized findings report, and one written clarification. Implementation, paid APIs, production credentials, and ongoing monitoring require a separate written scope.
+
+1. [Submit a public, sanitized request in English](https://github.com/stomeonst/launchclear-capability-samples/issues/new?template=data-signal-audit-request.yml).
+2. [用中文提交公开且已脱敏的数据洞察审计需求](https://github.com/stomeonst/launchclear-capability-samples/issues/new?template=data-signal-audit-request-zh.yml)。
+3. [Review the automation rescue sample](https://chris-saas-services.stomeonst123.chatgpt.site/resources/automation-rescue-sample) for a separate USD 120 or RMB 799 workflow repair scope.
+
+Do not place credentials, API keys, personal data, customer data, private URLs, production exports, or confidential logs in a public GitHub issue. A request starts a scope review only. Work starts after scope, payment, access boundaries, and acceptance criteria are confirmed in writing.
+
 ## What it proves
 
 1. Normalize records from more than one source shape.
