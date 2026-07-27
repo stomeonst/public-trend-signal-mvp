@@ -68,6 +68,18 @@ The workflow intentionally has no credentials, external requests, customer data,
 
 The fixture contains no customer code, private repository material, credentials, or production data.
 
+## Simplified Chinese AI evaluation proof
+
+[`docs/simplified-chinese-ai-evaluation-sample.md`](docs/simplified-chinese-ai-evaluation-sample.md) evaluates one fictional AI answer against a weighted bilingual rubric. It includes:
+
+1. Explicit instruction following and factual support checks.
+2. Mainland China language quality and localization review.
+3. Severity tagged findings tied to visible evidence.
+4. A bounded reference revision.
+5. Second reviewer consistency checks.
+
+The sample contains no private benchmark, customer prompt, model trace, personal data, or confidential guideline.
+
 ## Test
 
 ```bash
