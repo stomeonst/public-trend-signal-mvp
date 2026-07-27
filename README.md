@@ -31,11 +31,26 @@ Outputs:
 * `build/errors.jsonl`
 * `build/run-receipt.json`
 
+## Importable n8n proof
+
+`examples/n8n-public-trend-signal-workflow.json` is an importable concept workflow that demonstrates the same bounded pipeline inside n8n:
+
+1. Start manually with five fictional records.
+2. Normalize titles and remove tracking parameters from URLs.
+3. Deduplicate records with a stable source and URL key.
+4. Apply a deterministic trend score.
+5. Split low-confidence records into a human review queue.
+6. Prepare accepted records for a customer-owned table connector.
+
+The workflow intentionally has no credentials, external requests, customer data, production URLs, or automatic publishing nodes. The final table connector remains outside the public sample because workspace access and destination schema require customer authorization.
+
 ## Test
 
 ```bash
 python3 -m unittest discover -s tests -v
 ```
+
+The tests validate both the Python pipeline and the public n8n workflow structure, including its credential-free boundary.
 
 ## Production boundary
 
