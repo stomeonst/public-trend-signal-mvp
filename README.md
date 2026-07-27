@@ -80,6 +80,18 @@ The fixture contains no customer code, private repository material, credentials,
 
 The sample contains no private benchmark, customer prompt, model trace, personal data, or confidential guideline.
 
+## English to Simplified Chinese translation evaluation proof
+
+[`docs/english-to-simplified-chinese-translation-evaluation-sample.md`](docs/english-to-simplified-chinese-translation-evaluation-sample.md) evaluates one fictional machine translation using a public, purpose-built taxonomy. It includes:
+
+1. A consequential negation error with source-linked evidence.
+2. Accuracy, terminology, language quality, locale suitability, and completeness checks.
+3. Critical, major, and minor severity definitions.
+4. A corrected Simplified Chinese target.
+5. Acceptance and second-review checks.
+
+The sample contains no customer source text, private benchmark, proprietary scoring guide, model trace, personal data, or confidential terminology.
+
 ## Test
 
 ```bash
