@@ -56,6 +56,10 @@ Outputs:
 
 The workflow intentionally has no credentials, external requests, customer data, production URLs, or automatic publishing nodes. The final table connector remains outside the public sample because workspace access and destination schema require customer authorization.
 
+## Project-specific proof map
+
+[`docs/china-story-trend-workflow-proof-map.md`](docs/china-story-trend-workflow-proof-map.md) maps the public pipeline to a bounded China-related short-video trend workflow. It connects each requested capability to existing evidence, an acceptance check, and the remaining production proof. The document clearly labels the work as a self-initiated demonstration and does not claim a customer engagement or live social-platform collection.
+
 ## Bilingual Python review proof
 
 [`docs/python-code-review-sample.md`](docs/python-code-review-sample.md) reviews one intentionally flawed fictional function in English and Simplified Chinese. It includes:
