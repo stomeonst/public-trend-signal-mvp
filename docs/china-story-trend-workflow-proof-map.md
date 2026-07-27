@@ -13,11 +13,11 @@ The bounded flow is:
 1. Read records from one customer-authorized API or export.
 2. Normalize source fields into one contract.
 3. Remove tracking parameters and block duplicates.
-4. score recency and engagement signals with visible rules.
-5. classify the topic and generate a concise editorial rationale.
-6. route weak or invalid records to human review.
-7. write approved fields to one customer-owned Feishu Bitable or Notion database.
-8. retain a run receipt, error list, and maintenance checklist.
+4. Score recency and engagement signals with visible rules.
+5. Classify the topic and generate a concise editorial rationale.
+6. Route weak or invalid records to human review.
+7. Write approved fields to one customer-owned Feishu Bitable or Notion database.
+8. Retain a run receipt, error list, and maintenance checklist.
 
 ## Requirement-to-evidence map
 
