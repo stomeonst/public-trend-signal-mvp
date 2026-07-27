@@ -1,5 +1,7 @@
 # Public Trend Signal MVP
 
+[![tests](https://github.com/stomeonst/public-trend-signal-mvp/actions/workflows/tests.yml/badge.svg)](https://github.com/stomeonst/public-trend-signal-mvp/actions/workflows/tests.yml)
+
 A local, reproducible proof of an authorized trend-data pipeline.
 
 This repository uses fictional records. It does not scrape TikTok, Instagram, YouTube, or any other platform. It contains no customer data, credentials, cookies, private URLs, or paid API calls.
