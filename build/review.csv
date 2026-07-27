@@ -1,0 +1,2 @@
+signal_id,source,url,title,description,published_at,author,views,likes,comments,shares,topic,confidence,score,review_status,review_reason
+86019f423006324b,fictional_youtube,https://example.test/watch/unknown,Morning observations,A fictional item without topic keywords,2026-07-25T09:00:00Z,Demo Observer,600,20,2,1,other,0.0,3.8187,review,classification confidence below 0.55

@@ -1,0 +1,14 @@
+{
+  "accepted_records": 2,
+  "as_of": "2026-07-27T00:00:00Z",
+  "error_records": 1,
+  "fictional_data": true,
+  "hashes": {
+    "errors.jsonl": "cb130c42305a0bd487e086fe77a096059b5f2ba48a14792e9726faf86010ce20",
+    "review.csv": "d970a32078cb6aed1bc9cb4358ad9e009ae89e38b383b04b78d6226390acbce2",
+    "signals.csv": "c0e5a949af849ba31ce9eafc287ca813f3f74c0d154a790314eb7005065f221f"
+  },
+  "input_records": 5,
+  "review_records": 1,
+  "unique_records": 3
+}

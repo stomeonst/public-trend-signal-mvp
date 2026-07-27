@@ -1,0 +1,8 @@
+[project]
+name = "public-trend-signal-mvp"
+version = "0.1.0"
+description = "A reproducible, fictional trend signal pipeline proof"
+requires-python = ">=3.11"
+
+[tool.unittest]
+start-directory = "tests"
