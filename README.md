@@ -56,6 +56,16 @@ Outputs:
 
 The workflow intentionally has no credentials, external requests, customer data, production URLs, or automatic publishing nodes. The final table connector remains outside the public sample because workspace access and destination schema require customer authorization.
 
+`examples/n8n-fictional-mcp-to-email-workflow.json` is a second importable workflow for a fixed-scope MCP-shaped response to email-report path. It demonstrates:
+
+1. A complete fictional video-analysis response.
+2. A repeated request ID that routes to human review instead of a second email.
+3. A missing-summary case with visible validation errors.
+4. A deterministic plain-text email payload.
+5. A disabled email destination with bounded retry settings and no credentials.
+
+The accompanying [`docs/mcp-to-email-fixed-scope-proof.md`](docs/mcp-to-email-fixed-scope-proof.md) defines the sanitized input contract, both observable branches, 12 acceptance checks, the USD 139 fixed scope, and the production boundary.
+
 ## Project-specific proof map
 
 [`docs/china-story-trend-workflow-proof-map.md`](docs/china-story-trend-workflow-proof-map.md) maps the public pipeline to a bounded China-related short-video trend workflow. It connects each requested capability to existing evidence, an acceptance check, and the remaining production proof. The document clearly labels the work as a self-initiated demonstration and does not claim a customer engagement or live social-platform collection.
@@ -102,7 +112,7 @@ The sample contains no customer source text, private benchmark, proprietary scor
 python3 -m unittest discover -s tests -v
 ```
 
-The tests validate both the Python pipeline and the public n8n workflow structure, including its credential-free boundary.
+The tests validate the Python pipeline and both public n8n workflow structures, including their credential-free boundaries.
 
 ## Production boundary
 

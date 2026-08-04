@@ -1,0 +1,224 @@
+{
+  "name": "Fictional MCP Video Report to Email | Credential-Free Demo",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "mcp-email-manual-trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -840,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      request_id: 'demo-request-001',\n      video_title: 'Fictional product walkthrough',\n      video_url: 'https://example.invalid/videos/demo-001',\n      summary: 'The fictional video explains a three-step review workflow and ends with one clear next action.',\n      confidence: 0.91,\n      highlights: [\n        { timestamp_seconds: 12, label: 'Problem statement' },\n        { timestamp_seconds: 47, label: 'Workflow demonstration' },\n        { timestamp_seconds: 83, label: 'Next action' }\n      ],\n      recipient: 'reviewer@example.invalid'\n    }\n  },\n  {\n    json: {\n      request_id: 'demo-request-001',\n      video_title: 'Fictional product walkthrough duplicate',\n      video_url: 'https://example.invalid/videos/demo-001-copy',\n      summary: 'This duplicate fixture proves that the same request ID does not reach the email destination twice.',\n      confidence: 0.88,\n      highlights: [],\n      recipient: 'reviewer@example.invalid'\n    }\n  },\n  {\n    json: {\n      request_id: 'demo-request-002',\n      video_title: 'Fictional incomplete analysis',\n      video_url: 'https://example.invalid/videos/demo-002',\n      summary: '',\n      confidence: 0.42,\n      highlights: [],\n      recipient: 'reviewer@example.invalid'\n    }\n  }\n];"
+      },
+      "id": "fictional-mcp-responses",
+      "name": "Fictional MCP Responses",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -600,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map((item) => {\n  const row = item.json;\n  const requestId = String(row.request_id || '').trim();\n  const title = String(row.video_title || '').trim().replace(/\\s+/g, ' ');\n  const summary = String(row.summary || '').trim().replace(/\\s+/g, ' ');\n  const recipient = String(row.recipient || '').trim().toLowerCase();\n  const errors = [];\n\n  if (!requestId) errors.push('missing_request_id');\n  if (!title) errors.push('missing_video_title');\n  if (!summary) errors.push('missing_summary');\n  if (!recipient.endsWith('@example.invalid')) errors.push('recipient_must_use_example.invalid');\n\n  let videoUrl = '';\n  try {\n    const parsed = new URL(String(row.video_url || ''));\n    if (parsed.hostname !== 'example.invalid') throw new Error('public_demo_domain_only');\n    parsed.search = '';\n    parsed.hash = '';\n    videoUrl = parsed.toString();\n  } catch {\n    errors.push('invalid_or_non_example_video_url');\n  }\n\n  const highlights = Array.isArray(row.highlights)\n    ? row.highlights.map((highlight) => ({\n        timestamp_seconds: Math.max(0, Number(highlight.timestamp_seconds || 0)),\n        label: String(highlight.label || '').trim()\n      })).filter((highlight) => highlight.label)\n    : [];\n\n  const confidence = Math.max(0, Math.min(1, Number(row.confidence || 0)));\n\n  return {\n    json: {\n      request_id: requestId,\n      video_title: title,\n      video_url: videoUrl,\n      summary,\n      confidence,\n      highlights,\n      recipient,\n      validation_errors: errors,\n      needs_review: errors.length > 0,\n      send_email: errors.length === 0\n    }\n  };\n});"
+      },
+      "id": "normalize-and-validate",
+      "name": "Normalize and Validate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -360,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const seen = new Set();\nreturn items.map((item) => {\n  const key = String(item.json.request_id || '').toLowerCase();\n  if (seen.has(key)) {\n    return {\n      json: {\n        ...item.json,\n        validation_errors: [...item.json.validation_errors, 'duplicate_request_id'],\n        needs_review: true,\n        send_email: false\n      }\n    };\n  }\n  seen.add(key);\n  return { json: { ...item.json, delivery_key: key } };\n});"
+      },
+      "id": "deduplicate-request-id",
+      "name": "Deduplicate by Request ID",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -120,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ready-for-email-condition",
+              "leftValue": "={{ $json.send_email }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ready-for-email",
+      "name": "Ready for Email?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        120,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map((item) => ({\n  json: {\n    request_id: item.json.request_id,\n    video_title: item.json.video_title,\n    status: 'human_review_required',\n    send_email: false,\n    review_reasons: item.json.validation_errors,\n    next_action: 'Correct the sanitized fixture and rerun before configuring any live destination'\n  }\n}));"
+      },
+      "id": "human-review-queue",
+      "name": "Human Review Queue",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        360,
+        -140
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map((item) => {\n  const row = item.json;\n  const highlightLines = row.highlights.length\n    ? row.highlights.map((highlight) => `- ${highlight.timestamp_seconds}s: ${highlight.label}`).join('\\n')\n    : '- No highlights supplied';\n  const confidencePercent = Math.round(row.confidence * 100);\n  const subject = `Video analysis report | ${row.video_title} | ${row.request_id}`;\n  const body = [\n    `Summary: ${row.summary}`,\n    `Confidence: ${confidencePercent}%`,\n    '',\n    'Highlights:',\n    highlightLines,\n    '',\n    `Source: ${row.video_url}`,\n    `Request ID: ${row.request_id}`\n  ].join('\\n');\n\n  return {\n    json: {\n      request_id: row.request_id,\n      delivery_key: row.delivery_key,\n      email: {\n        from: 'no-reply@example.invalid',\n        to: row.recipient,\n        subject,\n        body\n      },\n      status: 'email_payload_ready'\n    }\n  };\n});"
+      },
+      "id": "prepare-email-report",
+      "name": "Prepare Email Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        360,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $json.email.from }}",
+        "toEmail": "={{ $json.email.to }}",
+        "subject": "={{ $json.email.subject }}",
+        "emailFormat": "text",
+        "text": "={{ $json.email.body }}",
+        "options": {}
+      },
+      "id": "disabled-email-destination",
+      "name": "Email Destination (Disabled)",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        600,
+        140
+      ],
+      "disabled": true,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "notesInFlow": true,
+      "notes": "Disabled public placeholder. The buyer configures a customer-owned email credential and confirms the destination before any live run."
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Fictional MCP Responses",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fictional MCP Responses": {
+      "main": [
+        [
+          {
+            "node": "Normalize and Validate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize and Validate": {
+      "main": [
+        [
+          {
+            "node": "Deduplicate by Request ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deduplicate by Request ID": {
+      "main": [
+        [
+          {
+            "node": "Ready for Email?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ready for Email?": {
+      "main": [
+        [
+          {
+            "node": "Prepare Email Report",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Human Review Queue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Email Report": {
+      "main": [
+        [
+          {
+            "node": "Email Destination (Disabled)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "00000000-0000-4000-8000-000000000002",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}
